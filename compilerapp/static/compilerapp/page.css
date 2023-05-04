@@ -12,8 +12,9 @@
     --color-primary: #7d7dc2;
     --font-color: #000000;
     --border-color: #000000;
-  }
-  .theme-dark {
+}
+
+.theme-dark {
     --color-action-options: #0c458f;
     --color-file-tree: #0d2969;
     --color-file-text: #031862;
@@ -23,102 +24,105 @@
     --color-primary: #0d2969;
     --font-color: #ffffff;
     --border-color: #ffffff;
-  }
-  
-  * {
+}
+
+* {
     box-sizing: border-box;
-  }
-  
-  body {
-      font-size: 1em;
-      font-family: 'Varela Round', sans-serif;
+}
+
+body {
+    font-size: 1em;
+    font-family: 'Varela Round', sans-serif;
     padding: 0;
     margin: 0;
-  }
-  
-  textarea {
+}
+
+textarea {
     resize: none;
-  }
-  
-  .container > * {
+}
+
+a {
+    text-decoration-line: none;
+}
+
+.container>* {
     color: #22212b;
     padding: 0.85em;
     color: var(--font-color);
-  }
-  
-  .item {
+}
+
+.item {
     border: 1px solid var(--border-color);
     color: var(--font-color);
-  }
-  
-  /* Style for vertical-aligned lists */
-  .vertical {
+}
+
+/* Style for vertical-aligned lists */
+.vertical {
     position: relative;
     list-style-type: circle;
     margin: 0;
     left: -5px;
     margin-left: -5px;
-  }
-  
-  /* Style for horizontal-aligned lists */
-  .horizontal {
-    display:inline;
+}
+
+/* Style for horizontal-aligned lists */
+.horizontal {
+    display: inline;
     padding: 0;
     padding-right: 0.5em;
     margin: 0;
-  }
-  
-  /* Tab style in choosing-tab section */
-  .tab {
+}
+
+/* Tab style in choosing-tab section */
+.tab {
     border: 1px solid var(--border-color);
     border-radius: 10px;
     background: var(--color-tab-content);
-    padding: 1px 2px; 
+    padding: 1px 2px;
     margin: 2px;
     cursor: pointer;
-  }
-  
-  .change-theme {
+}
+
+.change-theme {
     width: 50px;
     height: 26px;
     position: absolute;
     padding-right: 5px;
     right: 10px;
-  }
-  
-  /* Menu bar styling */
-  #action-options {
+}
+
+/* Menu bar styling */
+#action-options {
     background-color: var(--color-action-options);
-  }
-  
-  /* Filetree bar styling */
-  #file-tree {
+}
+
+/* Filetree bar styling */
+#file-tree {
     /* background-color: #89b6dd; */
     background-color: var(--color-primary);
     overflow: scroll;
-  }
-  
-  /* Main textbox for code styling */
-  #file-text {
-    background-color: var(--color-file-text);  
-  }
-  
-  /* Bar for nested grid representing tab styling */
-  #tab-space {
+}
+
+/* Main textbox for code styling */
+#file-text {
+    background-color: var(--color-file-text);
+}
+
+/* Bar for nested grid representing tab styling */
+#tab-space {
     background-color: var(--color-tab-space);
     margin: 0;
     padding: 0;
     text-align: center;
     border-width: 1px;
-  }
-  
-  /* Tab content bar styling */
-  #tab-content {
+}
+
+/* Tab content bar styling */
+#tab-content {
     background-color: var(--color-tab-content);
-  }
-  
-  /* Lookup for opened file bar styling */
-  #file-fragment {
+}
+
+/* Lookup for opened file bar styling */
+#file-fragment {
     background-color: var(--color-file-fragment);
-  }
-  
+}

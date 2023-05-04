@@ -24,6 +24,7 @@ class File(models.Model):
     is_deleted = models.BooleanField(default=False)
     deleted_at = models.DateTimeField(null=True, blank=True)
     last_modified = models.DateTimeField(auto_now=True)
+    content = models.TextField()
 
     catalog = models.ForeignKey(Catalog, on_delete=models.CASCADE)
 
