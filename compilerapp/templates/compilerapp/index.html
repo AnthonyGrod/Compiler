@@ -74,7 +74,16 @@ void timer0() __interrupt 1
     </textarea>
 
         <div class="item" id="file-tree">
-
+            
+            {% if catalogs_list %}
+                <ul class="vertical">
+                {% for catalog in catalogs_list %}
+                <li class="vertical">{{ catalog.name }}</li>
+                {% endfor %}
+                </ul>
+            {% else %}
+                <p>No catalogs are available.</p>
+            {% endif %}
 
             <!-- <ul class="vertical">
           <li class="vertical">/</li>
