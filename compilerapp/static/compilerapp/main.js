@@ -90,8 +90,19 @@ $(document).on('click', '#compile', function(e) {
         type: 'POST',
         data: {},
         success: function(data) {
-            if (data == "antek") alert("Antek");
             console.log("Success!");
             location.reload();
         }
     });});
+
+$(document).on('click', '#blob', function(e) {
+    // Get value on textarea with it="file-fragment"
+    var blob = new Blob(document.getElementById('file-fragment').textContent);
+
+    var link = document.createElement('a');
+    link.download = "file.asm";
+    link.href = window.URL.createObjectURL(blob);
+    link.click();
+    link.remove();
+    window.url.revokeObjectURL(link.href);
+});

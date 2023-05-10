@@ -58,8 +58,11 @@
 
         <div class="change-theme">
             <button type="button" id="switch" onclick="toggleTheme()">Switch</button>
-			<!-- <button type="button" id="blob" onclick="toggleTheme()">Blob</button> -->
         </div>
+
+		<div class="blob" id="blob">
+			<button type="button" id="blob">Blob</button>
+		</div>
 
 
     <textarea class="item" id="file-fragment">{% if compiled %}{{ compiled }}{% endif %}</textarea>

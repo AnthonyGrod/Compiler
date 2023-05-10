@@ -23,17 +23,12 @@ def index(request):
     else:
         root = root[0]
     file_tree = root.return_nested_objects()
-    print("=====================================")
     context = {
         'file_tree': file_tree,
         'root': root,
     }
     if "result" in session:
         context.update({'compiled': session['result']})
-    # session['file_tree'] = file_tree
-    # session['root'] = root
-    print("dsklfjdklsljfklsjfksj")
-    print(request.method)
     if request.method == 'POST':
         if "file" in request.POST:
             file_id = request.POST['file']
@@ -52,8 +47,6 @@ def index(request):
         if "procesor" in request.POST:
             session['procesor'] = request.POST['procesor']
         if "procesor_options" in request.POST:
-            print("=====================================")
-            print(request.POST.getlist('procesor_options'))
             session['procesor_options'] = request.POST.getlist('procesor_options')
 
     # Retrieve the stored data from the session
@@ -73,7 +66,6 @@ def index(request):
         context.update({'procesor_options': session['procesor_options']})
     
     session.save()
-    print(context)
      
     return render(request, 'index.html', context)
 
@@ -144,20 +136,13 @@ def delete_catalog(request):
     
 def compile(request):
     session = SessionStore(request.session.session_key)
-    print(request.method)
     standard = "--std-" + session['standard']
-    print(standard)
     selected_optymalizations = session['selected_optymalizations']
-    print(selected_optymalizations)
     file_id = session['file_id']
     file_to_compile = File.objects.get(id=file_id)
-    print(file_to_compile)
     file_content = file_to_compile.content
     procesor = session['procesor']
-    print(procesor)
     procesor_options = session['procesor_options']
-    print(procesor_options)
-    print("=====================================")
     context = {
         'standard': standard,
         'selected_optymalizations': selected_optymalizations,
@@ -186,25 +171,7 @@ def compile(request):
     else:
         session['result'] = res.stderr
     
-    context["compiled"] = session['result']
-    print("CONTEXT")
-    print(context)
     os.remove(file_name)
     session.save()
 
     return render(request, 'index.html', context)    
-
-    #  if "standard" in session:
-    #     context.update({'standard': session['standard']})
-
-    # if "selected_optymalizations" in session:
-    #     context.update({'selected_optymalizations': session['selected_optymalizations']})
-
-    # if "file_content" in session:
-    #     context.update({'file_content': session['file_content']})
-
-    # if "procesor" in session:
-    #     context.update({'procesor': session['procesor']})
-
-    # if "procesor_options" in session:
-    #     context.update({'procesor_options': session['procesor_options']})
