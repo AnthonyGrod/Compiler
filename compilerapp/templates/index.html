@@ -116,11 +116,35 @@
 
 				{% if procesor %}
 					{% if procesor == 'MCS51' %}
-						<div class="procesor_options" onclick="display_options(event, 'MCS51')">Options for MCS51</div>
+						<div class="procesor_options">Options for MCS51
+							<form method="POST">
+								{% csrf_token %}
+								<input type="checkbox" value="--model-small" name="procesor_options">--model-small<br>
+								<input type="checkbox" value="--model-medium" name="procesor_options">--model-medium<br>
+								<input type="checkbox" value="--model-large" name="procesor_options">--model-large<br>
+								<input type="submit" value="Save">
+							</form>
+						</div>
 					{% elif procesor == 'Z80' %}
-						<div class="procesor_options" onclick="display_options(event, 'Z80')">Options for Z80</div>
+						<div class="procesor_options">Options for Z80
+							<form method="POST">
+								{% csrf_token %}
+								<input type="checkbox" value="--portmode=z80" name="procesor_options">--portmode=z80</option><br>
+								<input type="checkbox" value="--portmode=z180" name="procesor_options">--portmode=z180</option><br>
+								<input type="checkbox" value="--fno-omit-frame-pointer" name="procesor_options">--fno-omit-frame-pointer</option><br>
+								<input type="submit" value="Save">
+							</form>
+						</div>
 					{% elif procesor == 'STM8' %}
-						<div class="procesor_options" onclick="display_options(event, 'STM8')">Options for STM8</div>
+						<div class="procesor_options">Options for STM8
+							<form method="POST">
+								{% csrf_token %}
+								<input type="checkbox" value="--model-medium" name="procesor_options">--model-medium<br>
+								<input type="checkbox" value="--model-large" name="procesor_options">--model-large<br>
+								<input type="checkbox" value="--out-fmt-elf" name="procesor_options">--out-fmt-elf<br>
+								<input type="submit" value="Save">
+							</form>
+						</div>
 					{% endif %}
 				{% endif %}
 

@@ -12,7 +12,7 @@ import os
 
 from django.contrib.auth.decorators import login_required
 
-@login_required(login_url='/accounts/login/')
+@login_required
 def index(request):
     session = SessionStore(request.session.session_key)
     # catalogs = Catalog.objects.all()
@@ -32,7 +32,7 @@ def index(request):
     if request.method == 'POST':
         if "file" in request.POST:
             file_id = request.POST['file']
-            if file_id != session['file_id']:
+            if "file_id" in session and file_id != session['file_id']:
                 session['result'] = None
                 context.update({'compiled': None})
             session['file_id'] = file_id
@@ -69,6 +69,7 @@ def index(request):
      
     return render(request, 'index.html', context)
 
+@login_required
 def add_catalog(request):
     if request.method == 'GET':
         context = {
@@ -87,6 +88,7 @@ def add_catalog(request):
         catalog.save()
         return HttpResponseRedirect(reverse('compilerapp:index'))
     
+@login_required
 def add_file(request):
     if request.method == 'GET':
         context = {
@@ -106,6 +108,7 @@ def add_file(request):
         file_to_create.save()
         return HttpResponseRedirect(reverse('compilerapp:index'))
     
+@login_required
 def delete_file(request):
     if request.method == 'GET':
         context = {
@@ -120,6 +123,7 @@ def delete_file(request):
         file_to_delete.save()
         return HttpResponseRedirect(reverse('compilerapp:index'))
     
+@login_required
 def delete_catalog(request):
     if request.method == 'GET':
         context = {
@@ -129,11 +133,11 @@ def delete_catalog(request):
     elif request.method == 'POST':
         catalog_id = request.POST['catalog_to_delete']
         catalog_to_delete = Catalog.objects.get(id=catalog_id)
-        catalog_to_delete.deleted_at = datetime.now()
-        catalog_to_delete.is_deleted = True
+        catalog_to_delete.delete()
         catalog_to_delete.save()
         return HttpResponseRedirect(reverse('compilerapp:index'))
     
+@login_required
 def compile(request):
     session = SessionStore(request.session.session_key)
     standard = "--std-" + session['standard']
@@ -175,3 +179,4 @@ def compile(request):
     session.save()
 
     return render(request, 'index.html', context)    
+
