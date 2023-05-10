@@ -10,6 +10,7 @@ urlpatterns = [
     path('delete_file/', views.delete_file, name='delete_file'),
     path('delete_catalog/', views.delete_catalog, name='delete_catalog'),
     path('compile/', views.compile, name='compile'),
+    path('compile_and_save/', views.compile_and_save, name='compile_and_save'),
     # path('file_contents/<int:catalog_id>/<int:file_id>/', views.file_contents, name='file_contents'),
     # path('open_file/', views.open_file, name='open_file'),
 ]

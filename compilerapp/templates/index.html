@@ -41,6 +41,11 @@
                     <a href="#" id="compile">Compile</a>
                 </li>
             </ul>
+			<ul class="horizontal">
+                <li class="horizontal">
+                    <a href="{% url 'compilerapp:compile_and_save' %}" id="compile_and_save">Save Compiled</a>
+                </li>
+            </ul>
             <ul class="horizontal">
                 <li class="horizontal">Edit</li>
             </ul>
@@ -59,10 +64,6 @@
         <div class="change-theme">
             <button type="button" id="switch" onclick="toggleTheme()">Switch</button>
         </div>
-
-		<div class="blob" id="blob">
-			<button type="button" id="blob">Blob</button>
-		</div>
 
 
     <textarea class="item" id="file-fragment">{% if compiled %}{{ compiled }}{% endif %}</textarea>

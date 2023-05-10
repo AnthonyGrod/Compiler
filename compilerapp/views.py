@@ -3,7 +3,7 @@ from django.shortcuts import render, redirect, reverse, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect
 from django.template import loader
 from django.contrib.sessions.backends.db import SessionStore
-
+from django.http import FileResponse
 from .models import Catalog, File, Section
 
 from datetime import datetime
@@ -180,3 +180,61 @@ def compile(request):
 
     return render(request, 'index.html', context)    
 
+def compile_and_save(request):
+    session = SessionStore(request.session.session_key)
+    standard = "--std-" + session['standard']
+    selected_optymalizations = session['selected_optymalizations']
+    file_id = session['file_id']
+    file_to_compile = File.objects.get(id=file_id)
+    file_content = file_to_compile.content
+    procesor = session['procesor']
+    procesor_options = session['procesor_options']
+    context = {
+        'standard': standard,
+        'selected_optymalizations': selected_optymalizations,
+        'file_content': file_content,
+        'procesor': procesor,
+        'procesor_options': procesor_options,
+    }
+    procesor = procesor.lower()
+    cmd = ["sdcc", "-S", "-m" + procesor, standard]
+    cmd.extend(selected_optymalizations)
+    cmd.extend(procesor_options)
+
+    file_name = f"{request.user.id}.c"
+    asm_name = f"{request.user.id}.asm"
+    tmp = open(file_name, "w")
+    tmp.write(file_content)
+    tmp.close()
+    cmd.append(file_name)
+    
+    res = subprocess.run(cmd, capture_output=True, text=True)
+    if res.returncode == 0:
+        tmp = open(asm_name, "r")
+        session['result'] = tmp.read()
+        tmp.close()
+
+    # Open the file
+        file = open(asm_name, 'rb')
+
+        # Create a FileResponse object
+        response = FileResponse(file)
+
+        # Set the content type as the file's MIME type
+        response['Content-Type'] = 'application/pdf'  # Replace with the appropriate MIME type
+
+        # Set the Content-Disposition header to force the browser to download the file
+        response['Content-Disposition'] = 'attachment; filename="file.asm"'  # Replace with the desired file name
+
+        # Optionally, you can set the Content-Length header if you know the file size
+        response['Content-Length'] = os.path.getsize(asm_name)
+
+        os.remove(asm_name)
+        os.remove(file_name)
+        session.save()
+        return response
+    else:
+        session['result'] = res.stderr
+    
+    os.remove(file_name)
+    session.save()
