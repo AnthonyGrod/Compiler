@@ -31,13 +31,14 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    "compilerapp.apps.CompilerappConfig",
+    # "compilerapp.apps.CompilerappConfig",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "compilerapp",
 ]
 
 MIDDLEWARE = [

@@ -51,9 +51,17 @@ a {
     color: var(--font-color);
 }
 
+#list {
+    margin-left: 2px;
+}
+
 .item {
     border: 1px solid var(--border-color);
     color: var(--font-color);
+}
+
+.tab-content {
+    display: none;
 }
 
 /* Style for vertical-aligned lists */
@@ -91,6 +99,10 @@ a {
     right: 10px;
 }
 
+.deleted {
+    color: rgb(197, 96, 96);
+}
+
 /* Menu bar styling */
 #action-options {
     background-color: var(--color-action-options);
@@ -126,3 +138,4 @@ a {
 #file-fragment {
     background-color: var(--color-file-fragment);
 }
+

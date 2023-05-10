@@ -1,0 +1,10 @@
+<form method="POST">
+    {% csrf_token %}
+    <label for="file_name">File Name:</label>
+    <input type="text" id="file_name" name="file_name">
+    <br><br>
+    <label for="catalog_name">Catalog Name:</label>
+    <input type="text" id="catalog_name" name="catalog_name">
+    <br><br>
+    <input type="submit" value="Submit">
+</form>

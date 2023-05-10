@@ -1,0 +1,18 @@
+<form method="post">
+    {% csrf_token %}
+    <label for="parent_catalog">Parent catalog:</label>
+    <select name="parent_catalog" id="parent_catalog">
+      <option value="">---</option>
+      {% for catalog in catalogs %}
+        {% if catalog.is_deleted == False %}
+            <option value="{{ catalog.id }}">{{ catalog.name }}</option>
+        {% endif %}
+      {% endfor %}
+    </select><br><br>
+    <label for="catalog_name">Catalog name:</label>
+    <input type="text" name="catalog_name" id="catalog_name"><br><br>
+    <label for="catalog_description">Catalog description:</label>
+    <textarea name="catalog_description" id="catalog_description"></textarea><br><br>
+    <input type="submit" value="Add catalog">
+</form>
+  

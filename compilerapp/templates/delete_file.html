@@ -1,0 +1,18 @@
+<form method="post">
+{% csrf_token %}
+<ul>
+    {% for file in files %}
+        {% if file.is_deleted == False %}
+        <li>
+            <strong>File Name:</strong> {{ file.name }}<br>
+            <strong>Parent Catalog:</strong> {{ file.parent_catalog }}<br>
+            <strong>File Description:</strong> {{ file.description }}<br>
+            <strong>File Content:</strong> {{ file.content }}<br>
+            <input type="radio" name="file_to_delete" value="{{ file.id }}"> Delete
+        </li>
+        {% endif %}
+    {% endfor %}
+</ul>
+
+<input type="submit" value="Delete selected files">
+</form>

@@ -1,0 +1,17 @@
+<form method="post">
+    {% csrf_token %}
+    <ul>
+        {% for catalog in catalogs %}
+        {% if catalog.is_deleted == False and catalog.name != "root" %}
+            <li>
+                <strong>Catalog Name:</strong> {{ catalog.name }}<br>
+                <strong>Parent Catalog:</strong> {{ catalog.parent_catalog }}<br>
+                <strong>Catalog Description:</strong> {{ catalog.description }}<br>
+                <input type="radio" name="catalog_to_delete" value="{{ catalog.id }}"> Delete
+            </li>
+        {% endif %}
+        {% endfor %}
+    </ul>
+
+    <input type="submit" value="Delete selected catalog">
+</form>

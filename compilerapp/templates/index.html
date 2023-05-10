@@ -1,0 +1,137 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>CSS Grid Layout</title>
+    <link href="https://fonts.googleapis.com/css?family=Varela+Round" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="{% static 'compilerapp/page.css' %}">
+    <link rel="stylesheet" href="{% static 'compilerapp/grid.css' %}">
+</head>
+
+<body>
+    <div class="container">
+        <div class="item" id="action-options">
+            <ul class="horizontal">
+                <li class="horizontal" id="add-file">
+                    <a href="{% url 'compilerapp:add_file' %}" id="add-file">Add File</a>
+                </li>
+            </ul>
+            <ul class="horizontal">
+                <li class="horizontal" id="add-catalog">
+                    <a href="{% url 'compilerapp:add_catalog' %}" id="add-catalog">Add Catalog</a>
+                </li>
+            </ul>
+			<ul class="horizontal">
+                <li class="horizontal" id="remove">
+                    <a href="{% url 'compilerapp:delete_file' %}" id="remove">Delete File</a>
+                </li>
+            </ul>
+			<ul class="horizontal">
+                <li class="horizontal" id="remove">
+                    <a href="{% url 'compilerapp:delete_catalog' %}" id="remove">Delete Catalog</a>
+                </li>
+            </ul>
+            <ul class="horizontal">
+                <li class="horizontal">Edit</li>
+            </ul>
+            <ul class="horizontal">
+                <li class="horizontal">Options</li>
+            </ul>
+        </div>
+
+		<textarea class="item" id="file-text">{{ file_content }}</textarea>
+        <div class="item" id="file-tree">
+        	<ul class="vertical">
+				{% include 'catalog.html' with catalog=root %}
+          	</ul>
+        </div>
+
+        <div class="change-theme">
+            <button type="button" id="switch" onclick="toggleTheme()">Switch</button>
+        </div>
+
+    <textarea class="item" id="file-fragment">
+void setup()
+{
+    // set timer 0 mode 1
+    TMOD = 0x01;
+    TH0 = 0x4C;
+    TL0 = 0x00;
+
+    // start timer 0
+    TR0 = 1;
+    // enable timer 0 interrupt
+    ET0 = 1;
+    // enable all interrupt
+    EA = 1;
+}
+      </textarea>
+
+        <div class="item" id="tab-space">
+            <div class="tab" onclick="displayTab(event, '1')">STANDARD</div>
+            <div class="tab" onclick="displayTab(event, '2')">OPTYMALIZACJE</div>
+            <div class="tab" onclick="displayTab(event, '3')">PROCESOR</div>
+            <div class="tab" onclick="displayTab(event, '4')">ZALEŻNE</div>
+        </div>
+
+        <div class="item" id="tab-content">
+
+			<div class="tab-content" id="1">
+				<form method="post">
+					{% csrf_token %}
+					<select name="standard" id="standard">
+					  <option value="c89">C89</option>
+					  <option value="c99">C99</option>
+					  <option value="c11">C11</option>
+					</select>
+					<br>
+					<input type="submit" value="Save">
+				  </form>
+			</div>
+
+			<div class="tab-content" id="2">
+				<form method="POST">
+					  {% csrf_token %}
+					  <input type="checkbox" value="--nogcse" name="optymalization">--nogcse</option><br>
+					  <input type="checkbox" value="--noinvariant" name="optymalization">--noinvariant</option><br>
+					  <input type="checkbox" value="--noinduction" name="optymalization">--noinduction</option><br>
+					  <input type="submit" value="Save">
+				</form>
+			</div>
+
+			<div class="tab-content" id="3">
+				<form method="post">
+					{% csrf_token %}
+					<select name="procesor" id="procesor">
+					  <option value="MCS51">MCS51</option>
+					  <option value="Z80">Z80</option>
+					  <option value="STM8">STM8</option>
+					</select>
+					<br>
+					<input type="submit" value="Save">
+				</form>
+			</div>
+
+			<div class="tab-content" id="4">
+
+				{% if procesor %}
+					{% if procesor == 'MCS51' %}
+						<div class="procesor_options" onclick="display_options(event, 'MCS51')">Options for MCS51</div>
+					{% elif procesor == 'Z80' %}
+						<div class="procesor_options" onclick="display_options(event, 'Z80')">Options for Z80</div>
+					{% elif procesor == 'STM8' %}
+						<div class="procesor_options" onclick="display_options(event, 'STM8')">Options for STM8</div>
+					{% endif %}
+				{% endif %}
+
+				<div id="options-container"></div>
+			</div>
+		</div>
+    </div>
+    <script src="{% static 'compilerapp/main.js' %}"></script>
+</body>
+
+</html>
