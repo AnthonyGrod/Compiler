@@ -9,6 +9,8 @@
     <link href="https://fonts.googleapis.com/css?family=Varela+Round" rel="stylesheet" type="text/css">
     <link rel="stylesheet" href="{% static 'compilerapp/page.css' %}">
     <link rel="stylesheet" href="{% static 'compilerapp/grid.css' %}">
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/3.0.1/js.cookie.min.js"></script>
 </head>
 
 <body>
@@ -25,13 +27,18 @@
                 </li>
             </ul>
 			<ul class="horizontal">
-                <li class="horizontal" id="remove">
+                <li class="horizontal" id="remove_file">
                     <a href="{% url 'compilerapp:delete_file' %}" id="remove">Delete File</a>
                 </li>
             </ul>
 			<ul class="horizontal">
-                <li class="horizontal" id="remove">
+                <li class="horizontal" id="remove_catalog">
                     <a href="{% url 'compilerapp:delete_catalog' %}" id="remove">Delete Catalog</a>
+                </li>
+            </ul>
+			<ul class="horizontal">
+                <li class="horizontal">
+                    <a href="#" id="compile">Compile</a>
                 </li>
             </ul>
             <ul class="horizontal">
@@ -51,24 +58,11 @@
 
         <div class="change-theme">
             <button type="button" id="switch" onclick="toggleTheme()">Switch</button>
+			<!-- <button type="button" id="blob" onclick="toggleTheme()">Blob</button> -->
         </div>
 
-    <textarea class="item" id="file-fragment">
-void setup()
-{
-    // set timer 0 mode 1
-    TMOD = 0x01;
-    TH0 = 0x4C;
-    TL0 = 0x00;
 
-    // start timer 0
-    TR0 = 1;
-    // enable timer 0 interrupt
-    ET0 = 1;
-    // enable all interrupt
-    EA = 1;
-}
-      </textarea>
+    <textarea class="item" id="file-fragment">{% if compiled %}{{ compiled }}{% endif %}</textarea>
 
         <div class="item" id="tab-space">
             <div class="tab" onclick="displayTab(event, '1')">STANDARD</div>

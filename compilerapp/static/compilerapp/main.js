@@ -1,3 +1,10 @@
+const csrftoken = Cookies.get('csrftoken');
+$.ajaxSetup({
+  beforeSend: function(xhr, settings) {
+    xhr.setRequestHeader('X-CSRFToken', csrftoken);
+  }
+});
+
 // function to set a given theme/color-scheme
 function setTheme(themeName) {
     localStorage.setItem('theme', themeName);
@@ -76,3 +83,15 @@ function display_options(event, processor) {
         `;
     }
 }
+
+$(document).on('click', '#compile', function(e) {
+    $.ajax({
+        url: '/compilerapp/compile/',
+        type: 'POST',
+        data: {},
+        success: function(data) {
+            if (data == "antek") alert("Antek");
+            console.log("Success!");
+            location.reload();
+        }
+    });});

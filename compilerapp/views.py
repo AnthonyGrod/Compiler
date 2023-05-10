@@ -7,6 +7,8 @@ from django.contrib.sessions.backends.db import SessionStore
 from .models import Catalog, File, Section
 
 from datetime import datetime
+import subprocess
+import os
 
 from django.contrib.auth.decorators import login_required
 
@@ -21,14 +23,24 @@ def index(request):
     else:
         root = root[0]
     file_tree = root.return_nested_objects()
+    print("=====================================")
     context = {
         'file_tree': file_tree,
         'root': root,
     }
+    if "result" in session:
+        context.update({'compiled': session['result']})
+    # session['file_tree'] = file_tree
+    # session['root'] = root
+    print("dsklfjdklsljfklsjfksj")
     print(request.method)
     if request.method == 'POST':
         if "file" in request.POST:
             file_id = request.POST['file']
+            if file_id != session['file_id']:
+                session['result'] = None
+                context.update({'compiled': None})
+            session['file_id'] = file_id
             file = File.objects.get(id=file_id)
             file_content = file.content
             session['file_content'] = file_content
@@ -62,8 +74,7 @@ def index(request):
     
     session.save()
     print(context)
-
-            
+     
     return render(request, 'index.html', context)
 
 def add_catalog(request):
@@ -130,3 +141,70 @@ def delete_catalog(request):
         catalog_to_delete.is_deleted = True
         catalog_to_delete.save()
         return HttpResponseRedirect(reverse('compilerapp:index'))
+    
+def compile(request):
+    session = SessionStore(request.session.session_key)
+    print(request.method)
+    standard = "--std-" + session['standard']
+    print(standard)
+    selected_optymalizations = session['selected_optymalizations']
+    print(selected_optymalizations)
+    file_id = session['file_id']
+    file_to_compile = File.objects.get(id=file_id)
+    print(file_to_compile)
+    file_content = file_to_compile.content
+    procesor = session['procesor']
+    print(procesor)
+    procesor_options = session['procesor_options']
+    print(procesor_options)
+    print("=====================================")
+    context = {
+        'standard': standard,
+        'selected_optymalizations': selected_optymalizations,
+        'file_content': file_content,
+        'procesor': procesor,
+        'procesor_options': procesor_options,
+    }
+    procesor = procesor.lower()
+    cmd = ["sdcc", "-S", "-m" + procesor, standard]
+    cmd.extend(selected_optymalizations)
+    cmd.extend(procesor_options)
+
+    file_name = f"{request.user.id}.c"
+    asm_name = f"{request.user.id}.asm"
+    tmp = open(file_name, "w")
+    tmp.write(file_content)
+    tmp.close()
+    cmd.append(file_name)
+    
+    res = subprocess.run(cmd, capture_output=True, text=True)
+    if res.returncode == 0:
+        tmp = open(asm_name, "r")
+        session['result'] = tmp.read()
+        tmp.close()
+        os.remove(asm_name)
+    else:
+        session['result'] = res.stderr
+    
+    context["compiled"] = session['result']
+    print("CONTEXT")
+    print(context)
+    os.remove(file_name)
+    session.save()
+
+    return render(request, 'index.html', context)    
+
+    #  if "standard" in session:
+    #     context.update({'standard': session['standard']})
+
+    # if "selected_optymalizations" in session:
+    #     context.update({'selected_optymalizations': session['selected_optymalizations']})
+
+    # if "file_content" in session:
+    #     context.update({'file_content': session['file_content']})
+
+    # if "procesor" in session:
+    #     context.update({'procesor': session['procesor']})
+
+    # if "procesor_options" in session:
+    #     context.update({'procesor_options': session['procesor_options']})
