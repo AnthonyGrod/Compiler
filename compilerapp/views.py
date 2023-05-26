@@ -147,13 +147,6 @@ def compile(request):
     file_content = file_to_compile.content
     procesor = session['procesor']
     procesor_options = session['procesor_options']
-    context = {
-        'standard': standard,
-        'selected_optymalizations': selected_optymalizations,
-        'file_content': file_content,
-        'procesor': procesor,
-        'procesor_options': procesor_options,
-    }
     procesor = procesor.lower()
     cmd = ["sdcc", "-S", "-m" + procesor, standard]
     cmd.extend(selected_optymalizations)
@@ -162,9 +155,10 @@ def compile(request):
     file_name = f"{request.user.id}.c"
     asm_name = f"{request.user.id}.asm"
     tmp = open(file_name, "w")
-    tmp.write(file_content)
-    tmp.close()
-    cmd.append(file_name)
+    if file_content != None:
+        tmp.write(file_content)
+        tmp.close()
+        cmd.append(file_name)
     
     res = subprocess.run(cmd, capture_output=True, text=True)
     if res.returncode == 0:
@@ -178,7 +172,7 @@ def compile(request):
     os.remove(file_name)
     session.save()
 
-    return render(request, 'index.html', context)    
+    return render(request, 'index.html')    
 
 def compile_and_save(request):
     session = SessionStore(request.session.session_key)
@@ -189,13 +183,6 @@ def compile_and_save(request):
     file_content = file_to_compile.content
     procesor = session['procesor']
     procesor_options = session['procesor_options']
-    context = {
-        'standard': standard,
-        'selected_optymalizations': selected_optymalizations,
-        'file_content': file_content,
-        'procesor': procesor,
-        'procesor_options': procesor_options,
-    }
     procesor = procesor.lower()
     cmd = ["sdcc", "-S", "-m" + procesor, standard]
     cmd.extend(selected_optymalizations)
@@ -204,7 +191,8 @@ def compile_and_save(request):
     file_name = f"{request.user.id}.c"
     asm_name = f"{request.user.id}.asm"
     tmp = open(file_name, "w")
-    tmp.write(file_content)
+    if (file_content != None):
+        tmp.write(file_content)
     tmp.close()
     cmd.append(file_name)
     
@@ -238,3 +226,5 @@ def compile_and_save(request):
     
     os.remove(file_name)
     session.save()
+    response = FileResponse()
+    return response

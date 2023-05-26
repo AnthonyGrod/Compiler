@@ -4,7 +4,7 @@
 
 .theme-light {
     --color-action-options: #80a6d7;
-    --color-file-tree: #7d7dc2;
+    --color-file-tree: #a7c3d0;
     --color-file-text: #a7c3d0;
     --color-tab-space: #85a8ce;
     --color-tab-content: #5d9ab3;
@@ -12,18 +12,20 @@
     --color-primary: #7d7dc2;
     --font-color: #000000;
     --border-color: #000000;
+    --button-color: #5f14df;
 }
 
 .theme-dark {
-    --color-action-options: #0c458f;
-    --color-file-tree: #0d2969;
-    --color-file-text: #031862;
-    --color-tab-space: #2b2b2b;
-    --color-tab-content: #2b2b2b;
-    --color-file-fragment: #2b2b2b;
-    --color-primary: #0d2969;
-    --font-color: #ffffff;
-    --border-color: #ffffff;
+    --color-action-options: #383b46;
+    --color-file-tree: #383b46;
+    --color-file-text: #31333d;
+    --color-tab-space: #383b46;
+    --color-tab-content: #31333d;
+    --color-file-fragment: #383b46;
+    --color-primary: #343645;
+    --font-color: #b4c7e3;
+    --border-color: #5d668b;
+    --button-color: #3c394d;
 }
 
 * {
@@ -43,6 +45,20 @@ textarea {
 
 a {
     text-decoration-line: none;
+    color: var(--font-color);
+}
+
+.delete {
+    color: red;
+    border-radius: 5px;
+    border-color: #000000;
+    background-color: var(--button-color);
+}
+
+.file-button {
+    background-color: var(--color-file-tree);
+    border: none;
+    color: var(--font-color);
 }
 
 .container>* {
@@ -57,6 +73,15 @@ a {
 
 .item {
     border: 1px solid var(--border-color);
+    color: var(--font-color);
+}
+
+.file-tree-entry {
+    padding-left: -10px;
+    margin-left: -30px;
+}
+
+.catalog {
     color: var(--font-color);
 }
 

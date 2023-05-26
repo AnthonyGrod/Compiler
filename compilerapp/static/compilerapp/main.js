@@ -57,3 +57,26 @@ $(document).on('click', '#compile', function(e) {
             location.reload();
         }
     });});
+
+
+function deleteCatalog(catalogId) {
+    fetch(`/delete_catalog/`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': '{{ csrf_token }}',
+        },
+        body: JSON.stringify({ catalog_to_delete: catalogId }),
+    })
+}
+
+function deleteFile(fileId) {
+    fetch(`/delete_file/`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': '{{ csrf_token }}',
+        },
+        body: JSON.stringify({ file_to_delete: fileId }),
+    })
+}
