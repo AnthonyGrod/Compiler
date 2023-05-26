@@ -1,7 +1,7 @@
 {% if catalog %}
-    <li>
+    <li class="file-tree">
         {% if catalog.is_deleted == False %}
-            <a class="catalog">{{ catalog.name }}/</a>
+            <a class="catalog">{{ catalog.name }}/</a><button name="delete-catalog" class="delete" type="submit">x</button>
         {% endif %}
         <ul>
             {% for subcatalog in catalog.catalog_set.all %}
@@ -13,7 +13,7 @@
             {% csrf_token %}
             {% for file in catalog.file_set.all %}
                 {% if file.is_deleted == False %}
-                    <li><a class="file"><button name="file" type="submit" value="{{file.id}}">{{ file.name }}</button></a></li>
+                    <li class="file-tree-entry"><a class="file"><button name="file" class="file-button" type="submit" value="{{file.id}}">{{ file.name }}</button><button name="delete-file" class="delete" type="submit">x</button></a></li>
                 {% endif %}
             {% endfor %}
             </form>
