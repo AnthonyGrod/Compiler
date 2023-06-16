@@ -172,3 +172,77 @@ class ViewTests(TestCase):
         response = self.client.get(reverse('compilerapp:compile_and_save'))
 
         self.assertEqual(response.status_code, 200)
+
+
+class CompilerAppTestCase(TestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(username='testuser', password='testpass')
+        self.client.login(username='testuser', password='testpass')
+
+    def test_index_view(self):
+        url = reverse('compilerapp:index')
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'index.html')
+        self.assertIn('file_tree', response.context)
+        self.assertIn('root', response.context)
+
+        # Add additional assertions as needed
+
+    def test_add_catalog_view(self):
+        url = reverse('compilerapp:add_catalog')
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'add_catalog.html')
+        self.assertIn('catalogs', response.context)
+
+        # Add additional assertions as needed
+
+    def test_add_file_view(self):
+        url = reverse('compilerapp:add_file')
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'add_file.html')
+        self.assertIn('catalogs', response.context)
+
+        # Add additional assertions as needed
+
+    def test_delete_file_view(self):
+        url = reverse('compilerapp:delete_file')
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'delete_file.html')
+        self.assertIn('files', response.context)
+
+        # Add additional assertions as needed
+
+    def test_delete_catalog_view(self):
+        url = reverse('compilerapp:delete_catalog')
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'delete_catalog.html')
+        self.assertIn('catalogs', response.context)
+
+    def test_index_view_post_request(self):
+        # Create a dummy file object
+        catalog = Catalog.objects.create(name='Test Catalog', user=self.user, parent=None)
+        file = File.objects.create(name='Test File', content='File Content', catalog=catalog)
+
+        # Create a session
+        session = SessionStore()
+        session.save()
+
+        # Create a POST request with the necessary data
+        data = {
+            'file': str(file.id),
+            'standard': 'C11',
+            'procesor': 'MCS51',
+        }
+        request = self.client.post('/index/', data)
+        request.session = session
+
+        # Call the view function
+        response = self.client.post(reverse('compilerapp:index'), data)
+
+        # Cleanup
+        file.delete()

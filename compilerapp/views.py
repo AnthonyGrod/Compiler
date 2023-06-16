@@ -197,65 +197,32 @@ def compile_and_save(request):
     cmd.append(file_name)
     
     res = subprocess.run(cmd, capture_output=True, text=True)
-    # if res.returncode == 0:
-    #     tmp = open(asm_name, "r")
-    #     session['result'] = tmp.read()
-    #     tmp.close()
-
-    # # Open the file
-    #     file = open(asm_name, 'rb')
-
-    #     # Create a FileResponse object
-    #     response = FileResponse(file)
-
-    #     # Set the content type as the file's MIME type
-    #     response['Content-Type'] = 'application/pdf'  # Replace with the appropriate MIME type
-
-    #     # Set the Content-Disposition header to force the browser to download the file
-    #     response['Content-Disposition'] = 'attachment; filename="file.asm"'  # Replace with the desired file name
-
-    #     # Optionally, you can set the Content-Length header if you know the file size
-    #     response['Content-Length'] = os.path.getsize(asm_name)
-
-    #     os.remove(asm_name)
-    #     os.remove(file_name)
-    #     session.save()
-    #     return response
-    # else:
-    #     session['result'] = res.stderr
-
-    for i in range(1, 100):
-        if not os.path.exists(f"file{i}.asm"):
-            asm_name = f"file{i}.asm"
-            break
-    
-    # write some code that is doing nothing
-    tmp = open(asm_name, "w")
-    tmp.write("nop\nnop\nnop\nnop\nnop\nnop\nnop\nnop\nnop\nnop\nnop\nnop\nnop\nnop\nnop\n")
-    tmp.write("nop\nnop\nnop\nnop\nnop\nnop\nnop\nnop\nnop\nnop\nnop\nnop\nnop\nnop\nnop\n")
-
-    # create random array and do binsearch on it and distard result
-    tmp.write("int binsearch(int *arr, int size, int key) {\n")
-    tmp.write("int low = 0;\n")
-    tmp.write("int high = size - 1;\n")
-    tmp.write("int mid;\n")
-    tmp.write("while (low <= high) {\n")
-    tmp.write("mid = (low + high) / 2;\n")
-    tmp.write("if (arr[mid] < key) {\n")
-    tmp.write("low = mid + 1;\n")
-    tmp.write("} else if (arr[mid] == key) {\n")
-    tmp.write("return mid;\n")
-    tmp.write("} else {\n")
-    tmp.write("high = mid - 1;\n")
-
-    tmp.close()
+    if res.returncode == 0:
+        tmp = open(asm_name, "r")
+        session['result'] = tmp.read()
+        tmp.close()
 
     # Open the file
-    file = open(asm_name, 'rb')
+        file = open(asm_name, 'rb')
 
-    # Create a FileResponse object
-    response = FileResponse(file)
+        # Create a FileResponse object
+        response = FileResponse(file)
 
+        # Set the content type as the file's MIME type
+        response['Content-Type'] = 'application/pdf'  # Replace with the appropriate MIME type
+
+        # Set the Content-Disposition header to force the browser to download the file
+        response['Content-Disposition'] = 'attachment; filename="file.asm"'  # Replace with the desired file name
+
+        # Optionally, you can set the Content-Length header if you know the file size
+        response['Content-Length'] = os.path.getsize(asm_name)
+
+        os.remove(asm_name)
+        os.remove(file_name)
+        session.save()
+        return response
+    else:
+        session['result'] = res.stderr
     
     os.remove(file_name)
     session.save()
