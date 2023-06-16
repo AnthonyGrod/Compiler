@@ -5,10 +5,13 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>CSS Grid Layout</title>
+    <title>SDCC Compiler</title>
     <link href="https://fonts.googleapis.com/css?family=Varela+Round" rel="stylesheet" type="text/css">
     <link rel="stylesheet" href="{% static 'compilerapp/page.css' %}">
     <link rel="stylesheet" href="{% static 'compilerapp/grid.css' %}">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.62.3/codemirror.min.css">
+  	<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.62.3/codemirror.min.js"></script>
+ 	<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.62.3/mode/javascript/javascript.min.js"></script>
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/3.0.1/js.cookie.min.js"></script>
 </head>
@@ -54,7 +57,8 @@
             </ul>
         </div>
 
-		<textarea class="item" id="file-text">{{ file_content }}</textarea>
+		<!-- <textarea class="item" id="file-text">{{ file_content }}</textarea> -->
+		<textarea id="file-text"></textarea>
         <div class="item" id="file-tree">
         	<ul class="vertical">
 				{% include 'catalog.html' with catalog=root %}
@@ -154,6 +158,15 @@
 		</div>
     </div>
     <script src="{% static 'compilerapp/main.js' %}"></script>
+
+	<script>
+		var codeEditor = CodeMirror.fromTextArea(document.getElementById("file-text"), {
+		  lineNumbers: true,
+		  mode: "javascript"
+		});
+		codeEditor.setSize("100%", "100%");
+		codeEditor.setValue(`{{ file_content }}`);
+	</script>
 </body>
 
 </html>

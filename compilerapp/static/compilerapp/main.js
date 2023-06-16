@@ -80,3 +80,10 @@ function deleteFile(fileId) {
         body: JSON.stringify({ file_to_delete: fileId }),
     })
 }
+
+// var codeEditor = CodeMirror(document.getElementById("file-text"), {
+//     lineNumbers: true,
+//     mode: "javascript"
+// });
+
+// codeEditor.setValue(`{{ file_content }}`);
