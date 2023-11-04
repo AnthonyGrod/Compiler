@@ -10,4 +10,5 @@ cd Compiler
 python manage.py runserver
 ```
 The site will be hosted on localhost:8080/compilerapp
+Default login and password is set to `admin` and `admin` respectively
 
